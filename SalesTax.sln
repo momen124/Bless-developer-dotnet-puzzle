@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesTax", "SalesTax\SalesTax.csproj", "{32EE45CD-3AC7-4AAA-B751-EEE5879C4F59}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesPrompter", "SalesPrompter\SalesPrompter.csproj", "{7B8ABFF7-123A-467E-8326-E4A79C023A59}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Instructions", "Instructions", "{842CD007-090E-42A9-8B94-F100B406D994}"
+	ProjectSection(SolutionItems) = preProject
+		Instructions and Tests.txt = Instructions and Tests.txt
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{32EE45CD-3AC7-4AAA-B751-EEE5879C4F59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32EE45CD-3AC7-4AAA-B751-EEE5879C4F59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32EE45CD-3AC7-4AAA-B751-EEE5879C4F59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32EE45CD-3AC7-4AAA-B751-EEE5879C4F59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B8ABFF7-123A-467E-8326-E4A79C023A59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B8ABFF7-123A-467E-8326-E4A79C023A59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B8ABFF7-123A-467E-8326-E4A79C023A59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B8ABFF7-123A-467E-8326-E4A79C023A59}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C2B92CAF-2F17-4CA2-B1E4-C07918007A06}
+	EndGlobalSection
+EndGlobal

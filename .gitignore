@@ -1,0 +1,8 @@
+packages
+*.suo
+bin
+obj
+*.user
+.vs
+.vscode
+.DS_Store
