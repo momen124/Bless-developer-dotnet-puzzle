@@ -1,12 +1,11 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace SalesTax
 {
     public class Sale
     {
-        private List<SaleLine> saleLines = new List<SaleLine>();
+        private readonly List<SaleLine> saleLines = new List<SaleLine>();
         private decimal totalTax;
         private decimal totalValue;
 
@@ -27,18 +26,11 @@ namespace SalesTax
 
         public override string ToString()
         {
-            var output = new StringBuilder();
-            foreach (var line in saleLines)
-            {
-                if (output.Length > 0)
-                    output.Append("\n");
-                output.Append(line.ToString());
-            }
-            output.Append("\n");
-            output.AppendFormat("Sales Taxes: {0:#,##0.00}", Tax);
-            output.Append("\n");
-            output.AppendFormat("Total: {0:#,##0.00}", TotalValue);
-            return output.ToString();
+            var receiptLines = saleLines.Select(line => line.ToString()).ToList();
+            receiptLines.Add($"Sales Taxes: {Tax:#,##0.00}");
+            receiptLines.Add($"Total: {TotalValue:#,##0.00}");
+
+            return string.Join("\n", receiptLines);
         }
     }
 }

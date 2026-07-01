@@ -1,47 +1,32 @@
 # Solution Summary
 
-## Bugs Fixed
+## What Changed
 
-### Critical
-1. **NullReferenceException in Sale.Add** -- `saleLines` field was declared but never initialized. Fixed by initializing as `new List<SaleLine>()`.
-2. **NullReferenceException on invalid input** -- `Sale.Add` called `saleLines.Add(saleLine)` without checking if `InputParser.ProcessInput` returned null. Fixed by returning `false` when parser returns null.
-3. **Parser rejected multi-word descriptions** -- InputParser checked `wordCount > 4` and returned null, rejecting any description longer than one word. Fixed by requiring at least 4 tokens (qty, desc, "at", price) but allowing more.
-4. **String.Join out-of-range** -- `string.Join(" ", words, 1, wordCount)` tried to read past array end for 4-word inputs. Fixed by joining tokens between index 1 and wordCount-2 (excluding "at" and price).
-5. **Import tax overwrote base tax** -- `taxRate = 5` replaced the base rate instead of adding. Fixed with `taxRate += 5`.
+- Fixed the `Sale` crash by initializing its line collection and ignoring invalid parsed lines.
+- Fixed input parsing for multi-word descriptions, repeated spaces, the `at` separator, invariant-culture prices, and case-insensitive `imported`.
+- Fixed imported tax so imported general goods pay 15% instead of 5%.
+- Reworked tax rounding to use `decimal` math and round up to the next 0.05, matching the supplied examples.
+- Fixed receipt formatting for values below 1.00 and blank receipts.
+- Added xUnit coverage for the six supplied scenarios, parser edge cases, tax rounding, and constructor validation.
+- Retargeted projects from `netcoreapp2.1` to `net8.0` because .NET Core 2.1 is end-of-life.
 
-### High
-6. **Double precision in money calculations** -- `CalculateTax` converted to `double` for rounding. Replaced with `decimal` math using `Math.Ceiling`.
-7. **Leading zero missing on amounts < 1.00** -- Format `#,###.00` produced `.85` instead of `0.85`. Changed to `0.00`.
-8. **Chocolates not recognized as exempt food** -- Added `"chocolate"` to exempt keywords.
-9. **Parser didn't validate `at` separator** -- Added check that `words[^2]` equals `"at"`.
+## Assumptions And Trade-Offs
 
-### Medium
-10. **Culture-sensitive decimal parsing** -- Used `CultureInfo.InvariantCulture` for `decimal.TryParse`.
-11. **Repeated spaces broke parsing** -- Used `StringSplitOptions.RemoveEmptyEntries`.
-12. **Negative/zero quantity or price accepted** -- Rejected values <= 0.
-13. **Case-sensitive `imported` detection** -- Used case-insensitive comparison.
-14. **Project targeted unsupported netcoreapp2.1** -- Retargeted to `net8.0`.
+- The instructions say "nearest 5 cents", but the expected receipts match rounding up to the next 0.05, so the implementation follows the examples.
+- Tax is calculated on the total line value: `unit price x quantity`.
+- Product classification uses simple case-insensitive substring matching for the supplied kata products. This is enough for books, chips, chocolates, and tablets, but a production system would use explicit product categories instead of keyword matching.
+- The word `imported` is normalized into the printed product name so the receipt matches the expected output.
 
-## Tax and Rounding Behavior
+## Verification
 
-- Tax is calculated on the **total line value** (unit price x quantity), not per unit.
-- Tax is rounded **up** to the next 0.05 using `Math.Ceiling(rawTax / 0.05m) * 0.05m`.
-- Books, food (chocolate, chips), and medical items (tablets) are exempt from base 10% GST.
-- Imported items incur an additional 5% import tax.
-- Imported exempt items pay only 5% import tax.
-- Imported general items pay 15% total (10% GST + 5% import).
+Run:
 
-## Tests Added
+```powershell
+dotnet test SalesTax.sln
+dotnet build SalesTax.sln
+```
 
-| Test | Description | Status |
-|------|-------------|--------|
-| Test 1 | Basic exempt (book, chips) and taxable (music CD) | Pass |
-| Test 2 | Imported exempt (chips) and imported general (transformer) | Pass |
-| Test 3 | Mixed basket with imported oil, perfume, medical, chocolates | Pass |
-| Test 4 | Multiple quantities with imports and exempt items | Pass |
-| Test 5 | Invalid input returns false without crashing | Pass |
-| Test 6 | Blank sale prints 0.00 totals | Pass |
+Expected result:
 
-## Framework
-
-Retargeted from `netcoreapp2.1` to `net8.0`. Tests use xUnit.
+- All tests pass.
+- Build succeeds.

@@ -13,8 +13,15 @@ namespace SalesTax
 
         public SaleLine(int lineQuantity, string name, decimal unitPrice, bool itemIsImported)
         {
+            if (lineQuantity <= 0)
+                throw new ArgumentOutOfRangeException(nameof(lineQuantity), "Quantity must be greater than zero.");
+            if (unitPrice <= 0)
+                throw new ArgumentOutOfRangeException(nameof(unitPrice), "Unit price must be greater than zero.");
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Product name is required.", nameof(name));
+
             Quantity = lineQuantity;
-            ProductName = name ?? string.Empty;
+            ProductName = name;
             Price = unitPrice;
             IsImported = itemIsImported;
 
@@ -32,6 +39,7 @@ namespace SalesTax
 
         private static bool IsExempt(string name)
         {
+            // Kata-scope classification: enough for supplied products, not a production catalog.
             var keywords = new[] { "book", "chocolate", "chip", "tablet" };
             foreach (var kw in keywords)
             {
@@ -43,6 +51,11 @@ namespace SalesTax
 
         public static decimal CalculateTax(decimal value, int taxRate)
         {
+            if (value < 0)
+                throw new ArgumentOutOfRangeException(nameof(value), "Taxable value cannot be negative.");
+            if (taxRate < 0)
+                throw new ArgumentOutOfRangeException(nameof(taxRate), "Tax rate cannot be negative.");
+
             var rawTax = value * taxRate / 100m;
             return Math.Ceiling(rawTax / 0.05m) * 0.05m;
         }
