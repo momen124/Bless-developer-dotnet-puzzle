@@ -11,8 +11,6 @@ namespace SalesTax
         public decimal LineValue { get; private set; }
         public decimal Tax { get; private set; }
 
-        private SaleLine() { }
-
         public SaleLine(int lineQuantity, string name, decimal unitPrice, bool itemIsImported)
         {
             Quantity = lineQuantity;
